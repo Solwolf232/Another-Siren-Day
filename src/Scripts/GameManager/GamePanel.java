@@ -1,33 +1,76 @@
 package Scripts.GameManager;
+import Scripts.Entities.Player;
+import Scripts.Entities.PlayerMovement;
+
 import javax.swing.JPanel;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
 
 public class GamePanel extends JPanel
 {
-    BufferedImage playerSheet;
+    // ======================
+    // Objects
+    // ======================
+    Player player;
+    InputHandler inputHandlerScript;
+    PlayerMovement playerMovementScript;
 
+    // ======================
+    // Constructors
+    // ======================
     public GamePanel()
     {
-        try
-        {
-            playerSheet = ImageIO.read(new File("src/Assets/PlayerSheet.png"));
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        init(); // Initializes Objects
+
+        GameLoop();
     }
 
+    // ======================
+    // Update / Start Methods
+    // ======================
+    private void update()
+    {
+       playerMovementScript.update();
+    }
+
+    private void GameLoop()
+    {
+        new javax.swing.Timer(16, e -> // Functions to repeat
+        {
+            update();
+            repaint();
+        }).start();
+    }
+
+
+
+    // ======================
+    // Paint Methods
+    // ======================
+
     @Override
-    protected void paintComponent(Graphics g)
+    protected void paintComponent(Graphics g) // Paints The Game
     {
       super.paintComponent(g);
 
-      g.drawImage(playerSheet, 200, 200, null);
+      player.paintPlayer(g);
+    }
 
+
+    // ======================
+    // Initialize Methods
+    // ======================
+
+    private void init()
+    {
+        player = new Player();
+
+        inputHandlerScript = new InputHandler();
+
+        playerMovementScript = new PlayerMovement(player,inputHandlerScript);
+
+
+        addKeyListener(inputHandlerScript); //Tracks the Key Inputs
+
+        setFocusable(true); // Don't Ignore the key Inputs
     }
 }
