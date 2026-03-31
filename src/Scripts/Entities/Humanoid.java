@@ -59,6 +59,7 @@ public abstract class Humanoid
       this.posX = posX;
       this.posY = posY;
       this.current_directionState = DirectionState.down;
+      this.current_animationState = AnimationState.idle;
 
     }
     protected Humanoid()
@@ -69,6 +70,7 @@ public abstract class Humanoid
         this.posX = 0f;
         this.posY = 0f;
         this.current_directionState = DirectionState.down;
+        this.current_animationState = AnimationState.idle;
 
     }
 

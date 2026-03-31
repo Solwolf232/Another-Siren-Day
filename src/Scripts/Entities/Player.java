@@ -20,10 +20,18 @@ public class Player extends Humanoid
     final private int imageHeight = 64;
 
     // Animation system
+
+    //Idle
     private Animation idleUp;
     private Animation idleDown;
     private Animation idleLeft;
     private Animation idleRight;
+
+    //Walking
+    private Animation walkUp;
+    private Animation walkDown;
+    private Animation walkLeft;
+    private Animation walkRight;
 
     private Animation currentAnimation;
 
@@ -53,14 +61,18 @@ public class Player extends Humanoid
     {
         try
         {
+            //Idle
             playerSheet = ImageIO.read(new File("src/Assets/Player/IdlePlayer.png"));
 
-            IdleUp();
-            IdleLeft();
-            IdleDown();
-            IdleRight();
+            IdleUp(playerSheet);
+            IdleLeft(playerSheet);
+            IdleDown(playerSheet);
+            IdleRight(playerSheet);
 
             currentAnimation = idleDown; // default
+
+            //Walk Animation
+            playerSheet = ImageIO.read(new File("src/Assets/Player/IdlePlayer.png"));
         }
         catch (IOException e)
         {
@@ -118,7 +130,9 @@ public class Player extends Humanoid
     // Animations
     // ======================
 
-    private void IdleUp()
+
+    //Idle Animations
+    private void IdleUp(BufferedImage playerSheet)
     {
         int frameWidth = playerSheet.getWidth() / 2;
         int frameHeight = playerSheet.getHeight() / 4;
@@ -133,7 +147,7 @@ public class Player extends Humanoid
         idleUp = new Animation(frames, 22);
     }
 
-    private void IdleLeft()
+    private void IdleLeft(BufferedImage playerSheet)
     {
         int frameWidth = playerSheet.getWidth() / 2;
         int frameHeight = playerSheet.getHeight() / 4;
@@ -148,7 +162,7 @@ public class Player extends Humanoid
         idleLeft = new Animation(frames, 22);
     }
 
-    private void IdleDown()
+    private void IdleDown(BufferedImage playerSheet)
     {
         int frameWidth = playerSheet.getWidth() / 2;
         int frameHeight = playerSheet.getHeight() / 4;
@@ -163,7 +177,7 @@ public class Player extends Humanoid
         idleDown = new Animation(frames, 22);
     }
 
-    private void IdleRight()
+    private void IdleRight(BufferedImage playerSheet)
     {
         int frameWidth = playerSheet.getWidth() / 2;
         int frameHeight = playerSheet.getHeight() / 4;
@@ -176,5 +190,21 @@ public class Player extends Humanoid
         frames[1] = playerSheet.getSubimage(frameWidth, row * frameHeight + 3, frameWidth, frameHeight);
 
         idleRight = new Animation(frames, 22);
+    }
+
+    //Walk Animations
+    private void walkUp(BufferedImage playerSheet)
+    {
+        int frameWidth = playerSheet.getWidth() / 2;
+        int frameHeight = playerSheet.getHeight() / 4;
+
+        int row = 0;
+
+        BufferedImage[] frames = new BufferedImage[2];
+
+        frames[0] = playerSheet.getSubimage(0, row * frameHeight, frameWidth, frameHeight);
+        frames[1] = playerSheet.getSubimage(frameWidth, row * frameHeight, frameWidth, frameHeight);
+
+        idleUp = new Animation(frames, 22);
     }
 }
