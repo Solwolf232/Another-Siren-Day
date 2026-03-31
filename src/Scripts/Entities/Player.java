@@ -1,5 +1,7 @@
 package Scripts.Entities;
 
+import Scripts.Graphics.Animation;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -7,64 +9,172 @@ import java.io.File;
 import java.io.IOException;
 
 @SuppressWarnings("all")
-public class Player
+public class Player extends Humanoid
 {
     // ======================
     // Variables
     // ======================
 
-    //Image Related
-    private BufferedImage playerImage; // Single Player Image (Sub Image)
+    private BufferedImage playerImage;
     final private int imageWidth = 64;
     final private int imageHeight = 64;
 
-    //Movement Related
-    private float posX; // Player X pos At world
-    private float posY; // Player Y pos at World
-    final private float playerSpeed = 4.5f;
+    // Animation system
+    private Animation idleUp;
+    private Animation idleDown;
+    private Animation idleLeft;
+    private Animation idleRight;
+
+    private Animation currentAnimation;
+
+    private BufferedImage playerSheet;
 
     // ======================
-    // Paint Methods
+    // Constructors
+    // ======================
+
+    public Player(BufferedImage playerImage,String name , int health , float speed , float posX, float posY)
+    {
+        super(name,health,speed,posX,posY);
+        init();
+    }
+
+    public Player()
+    {
+        super();
+        init();
+    }
+
+    // ======================
+    // Init
+    // ======================
+
+    private void init()
+    {
+        try
+        {
+            playerSheet = ImageIO.read(new File("src/Assets/Player/IdlePlayer.png"));
+
+            IdleUp();
+            IdleLeft();
+            IdleDown();
+            IdleRight();
+
+            currentAnimation = idleDown; // default
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    // ======================
+    // Update
+    // ======================
+
+    public void update()
+    {
+        switch(current_directionState)
+        {
+            case up:
+                currentAnimation = idleUp;
+                break;
+
+            case left:
+                currentAnimation = idleLeft;
+                break;
+
+            case down:
+                currentAnimation = idleDown;
+                break;
+
+            case right:
+                currentAnimation = idleRight;
+                break;
+        }
+
+        currentAnimation.update();
+    }
+
+    // ======================
+    // Paint
     // ======================
 
     public void paintPlayer(Graphics g)
     {
-        try
-        {
-            // Player Full Sprite Sheet
-            BufferedImage playerSheet = ImageIO.read(new File("src/Assets/PlayerSheet.png"));
+        playerImage = currentAnimation.getFrame();
 
-            playerImage = playerSheet.getSubimage(0,0,20,20);
-
-            g.drawImage(playerImage,(int)posX,(int)posY,imageWidth,imageHeight,null);
-        }
-        catch (IOException exception)
-        {
-            exception.printStackTrace(); // Print the Error
-        }
+        g.drawImage(
+                playerImage,
+                (int)posX,
+                (int)posY,
+                imageWidth,
+                imageHeight,
+                null
+        );
     }
 
     // ======================
-    // Getters & Setters
+    // Animations
     // ======================
 
-    public float getPosX() {
-        return posX;
+    private void IdleUp()
+    {
+        int frameWidth = playerSheet.getWidth() / 2;
+        int frameHeight = playerSheet.getHeight() / 4;
+
+        int row = 0;
+
+        BufferedImage[] frames = new BufferedImage[2];
+
+        frames[0] = playerSheet.getSubimage(0, row * frameHeight, frameWidth, frameHeight);
+        frames[1] = playerSheet.getSubimage(frameWidth, row * frameHeight, frameWidth, frameHeight);
+
+        idleUp = new Animation(frames, 22);
     }
 
-    public void setPosX(float posX) {
-        this.posX = posX;
+    private void IdleLeft()
+    {
+        int frameWidth = playerSheet.getWidth() / 2;
+        int frameHeight = playerSheet.getHeight() / 4;
+
+        int row = 1;
+
+        BufferedImage[] frames = new BufferedImage[2];
+
+        frames[0] = playerSheet.getSubimage(0, row * frameHeight, frameWidth, frameHeight);
+        frames[1] = playerSheet.getSubimage(frameWidth, row * frameHeight, frameWidth, frameHeight);
+
+        idleLeft = new Animation(frames, 22);
     }
 
-    public float getPosY() {
-        return posY;
+    private void IdleDown()
+    {
+        int frameWidth = playerSheet.getWidth() / 2;
+        int frameHeight = playerSheet.getHeight() / 4;
+
+        int row = 2;
+
+        BufferedImage[] frames = new BufferedImage[2];
+
+        frames[0] = playerSheet.getSubimage(0, row * frameHeight, frameWidth, frameHeight);
+        frames[1] = playerSheet.getSubimage(frameWidth, row * frameHeight, frameWidth, frameHeight);
+
+        idleDown = new Animation(frames, 22);
     }
 
-    public void setPosY(float posY) {
-        this.posY = posY;
-    }
+    private void IdleRight()
+    {
+        int frameWidth = playerSheet.getWidth() / 2;
+        int frameHeight = playerSheet.getHeight() / 4;
 
-    public float getPlayerSpeed() {
-        return playerSpeed;
+        int row = 3;
+
+        BufferedImage[] frames = new BufferedImage[2];
+
+        frames[0] = playerSheet.getSubimage(0, row * frameHeight + 3, frameWidth , frameHeight);
+        frames[1] = playerSheet.getSubimage(frameWidth, row * frameHeight + 3, frameWidth, frameHeight);
+
+        idleRight = new Animation(frames, 22);
     }
 }

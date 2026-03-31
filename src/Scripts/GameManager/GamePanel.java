@@ -14,6 +14,7 @@ public class GamePanel extends JPanel
     InputHandler inputHandlerScript;
     PlayerMovement playerMovementScript;
 
+
     // ======================
     // Constructors
     // ======================
@@ -29,7 +30,8 @@ public class GamePanel extends JPanel
     // ======================
     private void update()
     {
-       playerMovementScript.update();
+        playerMovementScript.update();
+        player.update();
     }
 
     private void GameLoop()
@@ -51,6 +53,7 @@ public class GamePanel extends JPanel
     protected void paintComponent(Graphics g) // Paints The Game
     {
       super.paintComponent(g);
+
 
       player.paintPlayer(g);
     }
