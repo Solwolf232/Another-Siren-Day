@@ -59,20 +59,30 @@ public class Player extends Humanoid
 
     private void init()
     {
+       initAnimations();
+    }
+
+
+    private void initAnimations()
+    {
         try
         {
             //Idle
             playerSheet = ImageIO.read(new File("src/Assets/Player/IdlePlayer.png"));
 
-            IdleUp(playerSheet);
-            IdleLeft(playerSheet);
-            IdleDown(playerSheet);
-            IdleRight(playerSheet);
+            idleDown  = createAnimation(playerSheet, 2, 2, 22, 2, 4);
+            idleLeft  = createAnimation(playerSheet, 1, 2, 22, 2, 4);
+            idleRight = createAnimation(playerSheet, 3, 2, 22, 2, 4);
+            idleUp    = createAnimation(playerSheet, 0, 2, 22, 2, 4);
 
             currentAnimation = idleDown; // default
 
             //Walk Animation
-            playerSheet = ImageIO.read(new File("src/Assets/Player/IdlePlayer.png"));
+            playerSheet = ImageIO.read(new File("src/Assets/Player/walkPlayer.png"));
+            walkDown  = createAnimation(playerSheet, 2, 9, 10, 9, 4);
+            walkLeft  = createAnimation(playerSheet, 1, 9, 10, 9, 4);
+            walkRight = createAnimation(playerSheet, 3, 9, 10, 9, 4);
+            walkUp    = createAnimation(playerSheet, 0, 9, 10, 9, 4);
         }
         catch (IOException e)
         {
@@ -86,23 +96,49 @@ public class Player extends Humanoid
 
     public void update()
     {
-        switch(current_directionState)
+        switch(current_animationState)
         {
-            case up:
-                currentAnimation = idleUp;
-                break;
+            case idle:
+                switch (current_directionState)
+                {
+                    case up:
+                        currentAnimation = idleUp;
+                        break;
 
-            case left:
-                currentAnimation = idleLeft;
-                break;
+                    case left:
+                        currentAnimation = idleLeft;
+                        break;
 
-            case down:
-                currentAnimation = idleDown;
-                break;
+                    case down:
+                        currentAnimation = idleDown;
+                        break;
 
-            case right:
-                currentAnimation = idleRight;
-                break;
+                    case right:
+                        currentAnimation = idleRight;
+                        break;
+                }
+            break;
+
+            case walking:
+                switch (current_directionState)
+                {
+                    case up:
+                        currentAnimation = walkUp;
+                        break;
+
+                    case left:
+                        currentAnimation = walkLeft;
+                        break;
+
+                    case down:
+                        currentAnimation = walkDown;
+                        break;
+
+                    case right:
+                        currentAnimation = walkRight;
+                        break;
+                }
+            break;
         }
 
         currentAnimation.update();
@@ -130,81 +166,21 @@ public class Player extends Humanoid
     // Animations
     // ======================
 
-
-    //Idle Animations
-    private void IdleUp(BufferedImage playerSheet)
+    private Animation createAnimation(BufferedImage sheet, int row, int frameCount, int delay , int widthSlice , int heightSlice)
     {
-        int frameWidth = playerSheet.getWidth() / 2;
-        int frameHeight = playerSheet.getHeight() / 4;
+        int frameWidth = sheet.getWidth() / widthSlice;
+        int frameHeight = sheet.getHeight() / heightSlice;
 
-        int row = 0;
+        BufferedImage[] frames = new BufferedImage[frameCount];
 
-        BufferedImage[] frames = new BufferedImage[2];
+        for (int i = 0; i < frameCount; i++)
+        {
+            frames[i] = sheet.getSubimage(i * frameWidth, row * frameHeight + 3, frameWidth, frameHeight);
+        }
 
-        frames[0] = playerSheet.getSubimage(0, row * frameHeight, frameWidth, frameHeight);
-        frames[1] = playerSheet.getSubimage(frameWidth, row * frameHeight, frameWidth, frameHeight);
-
-        idleUp = new Animation(frames, 22);
+        return new Animation(frames, delay);
     }
 
-    private void IdleLeft(BufferedImage playerSheet)
-    {
-        int frameWidth = playerSheet.getWidth() / 2;
-        int frameHeight = playerSheet.getHeight() / 4;
 
-        int row = 1;
 
-        BufferedImage[] frames = new BufferedImage[2];
-
-        frames[0] = playerSheet.getSubimage(0, row * frameHeight, frameWidth, frameHeight);
-        frames[1] = playerSheet.getSubimage(frameWidth, row * frameHeight, frameWidth, frameHeight);
-
-        idleLeft = new Animation(frames, 22);
-    }
-
-    private void IdleDown(BufferedImage playerSheet)
-    {
-        int frameWidth = playerSheet.getWidth() / 2;
-        int frameHeight = playerSheet.getHeight() / 4;
-
-        int row = 2;
-
-        BufferedImage[] frames = new BufferedImage[2];
-
-        frames[0] = playerSheet.getSubimage(0, row * frameHeight, frameWidth, frameHeight);
-        frames[1] = playerSheet.getSubimage(frameWidth, row * frameHeight, frameWidth, frameHeight);
-
-        idleDown = new Animation(frames, 22);
-    }
-
-    private void IdleRight(BufferedImage playerSheet)
-    {
-        int frameWidth = playerSheet.getWidth() / 2;
-        int frameHeight = playerSheet.getHeight() / 4;
-
-        int row = 3;
-
-        BufferedImage[] frames = new BufferedImage[2];
-
-        frames[0] = playerSheet.getSubimage(0, row * frameHeight + 3, frameWidth , frameHeight);
-        frames[1] = playerSheet.getSubimage(frameWidth, row * frameHeight + 3, frameWidth, frameHeight);
-
-        idleRight = new Animation(frames, 22);
-    }
-
-    //Walk Animations
-    private void walkUp(BufferedImage playerSheet)
-    {
-        int frameWidth = playerSheet.getWidth() / 2;
-        int frameHeight = playerSheet.getHeight() / 4;
-
-        int row = 0;
-
-        BufferedImage[] frames = new BufferedImage[2];
-
-        frames[0] = playerSheet.getSubimage(0, row * frameHeight, frameWidth, frameHeight);
-        frames[1] = playerSheet.getSubimage(frameWidth, row * frameHeight, frameWidth, frameHeight);
-
-        idleUp = new Animation(frames, 22);
-    }
 }

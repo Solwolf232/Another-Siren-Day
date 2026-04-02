@@ -37,14 +37,15 @@ public class PlayerMovement
           newPosY =  m_player.getPosY();
           newPosX = m_player.getPosX();
 
-          movePlayer(true,newPosX,newPosY,DirectionState.none);
+          movePlayer(false,newPosX,newPosY,DirectionState.none);
+
         }
         else if(m_inputHandlerScript.isUp && m_inputHandlerScript.isRight)
         {
             newPosY =  m_player.getPosY();
             newPosX = m_player.getPosX();
 
-            movePlayer(true,newPosX,newPosY,DirectionState.none);
+            movePlayer(false,newPosX,newPosY,DirectionState.none);
         }
 
         else if(m_inputHandlerScript.isDown && m_inputHandlerScript.isLeft)
@@ -52,7 +53,7 @@ public class PlayerMovement
             newPosY =  m_player.getPosY();
             newPosX = m_player.getPosX();
 
-            movePlayer(true,newPosX,newPosY,DirectionState.none);
+            movePlayer(false,newPosX,newPosY,DirectionState.none);
         }
 
         else if(m_inputHandlerScript.isDown && m_inputHandlerScript.isRight)
@@ -60,7 +61,7 @@ public class PlayerMovement
             newPosY =  m_player.getPosY();
             newPosX = m_player.getPosX();
 
-            movePlayer(true,newPosX,newPosY,DirectionState.none);
+            movePlayer(false,newPosX,newPosY,DirectionState.none);
         }
 
 

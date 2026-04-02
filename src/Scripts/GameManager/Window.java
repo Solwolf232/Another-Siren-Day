@@ -5,6 +5,9 @@ import javax.swing.JFrame;
 
 public class Window extends JFrame
 {
+
+    GamePanel panel = new GamePanel();
+
     // ======================
     // Constructors
     // ======================
@@ -16,14 +19,6 @@ public class Window extends JFrame
         setVisible(true);
     }
 
-    public Window(int widthSize,int heightSize)
-    {
-        CreateWindow(widthSize,heightSize);
-
-        CreatePanel();
-
-        setVisible(true);
-    }
 
     // ======================
     // Functions
@@ -31,22 +26,16 @@ public class Window extends JFrame
 
     private void CreatePanel()
     {
-        GamePanel panel = new GamePanel();
         add(panel);
     }
 
     private void CreateWindow() // No Parameters
     {
         setTitle("Another Siren Day");
-        setSize(800,600);
+        setSize(panel.getScreenWidth(),panel.getScreenHeight());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private void CreateWindow(int width,int height) // With Width/Height
-    {
-        setTitle("Another Siren Day");
-        setSize(width,height);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
+
 
 }

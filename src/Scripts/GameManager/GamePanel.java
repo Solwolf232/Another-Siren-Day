@@ -1,6 +1,7 @@
 package Scripts.GameManager;
 import Scripts.Entities.Player;
 import Scripts.Entities.PlayerMovement;
+import Scripts.Tiles.TileManager;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;
@@ -14,6 +15,20 @@ public class GamePanel extends JPanel
     InputHandler inputHandlerScript;
     PlayerMovement playerMovementScript;
 
+
+
+    // ======================
+    // Tiles (Map)
+    // ======================
+    public int tileSize = 32;
+
+    private int screenWidth = 800;
+    private int screenHeight = 600;
+
+    public int maxScreenCol = screenWidth / tileSize;
+    public int maxScreenRow = screenHeight / tileSize;
+
+    TileManager tileManager = new TileManager(this);
 
     // ======================
     // Constructors
@@ -54,7 +69,7 @@ public class GamePanel extends JPanel
     {
       super.paintComponent(g);
 
-
+      tileManager.draw(g);
       player.paintPlayer(g);
     }
 
@@ -75,5 +90,30 @@ public class GamePanel extends JPanel
         addKeyListener(inputHandlerScript); //Tracks the Key Inputs
 
         setFocusable(true); // Don't Ignore the key Inputs
+    }
+
+    // ======================
+    // Getters & Setters
+    // ======================
+
+    public int getScreenHeight()
+    {
+      return this.screenHeight;
+    }
+
+    public void setScreenHeight(int newScreenHeight)
+    {
+        this.screenHeight = newScreenHeight;
+    }
+
+    public int getScreenWidth()
+    {
+        return this.screenWidth;
+    }
+
+
+    public void setScreenWidth(int newScreenWidth)
+    {
+        this.screenWidth = newScreenWidth;
     }
 }
